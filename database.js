@@ -1,39 +1,54 @@
-const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
+const fs = require("fs");
+const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
 
-const dbPath = path.join(__dirname, 'database', 'revenue-resilience-dashboard.db');
-const db = new sqlite3.Database(dbPath);
+const databaseFolder = path.join(__dirname, "database");
+
+// Create database folder if it doesn't exist
+if (!fs.existsSync(databaseFolder)) {
+    fs.mkdirSync(databaseFolder, { recursive: true });
+}
+
+const databasePath = path.join(
+    databaseFolder,
+    "revenue-resilience-dashboard.db"
+);
+
+const db = new sqlite3.Database(databasePath, (err) => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log("Connected to SQLite database");
+    }
+});
 
 const run = (sql, params = []) =>
-  new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) return reject(err);
-      resolve(this);
+    new Promise((resolve, reject) => {
+        db.run(sql, params, function (err) {
+            if (err) reject(err);
+            else resolve(this);
+        });
     });
-  });
 
 const get = (sql, params = []) =>
-  new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row) => {
-      if (err) return reject(err);
-      resolve(row);
+    new Promise((resolve, reject) => {
+        db.get(sql, params, (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        });
     });
-  });
 
 const all = (sql, params = []) =>
-  new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
+    new Promise((resolve, reject) => {
+        db.all(sql, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
     });
-  });
 
-const close = () =>
-  new Promise((resolve, reject) => {
-    db.close((err) => {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
-
-module.exports = { db, run, get, all, close };
+module.exports = {
+    db,
+    run,
+    get,
+    all
+};
