@@ -1,0 +1,6 @@
+{
+  "name":"revenue-resilience-dashboard",
+  "version":"1.0.0",
+  "main":"server.js",
+  "scripts":{"start":"node createDatabase.js && node server.js"}
+}

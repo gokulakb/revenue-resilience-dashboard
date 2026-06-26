@@ -1,0 +1,39 @@
+const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+
+const dbPath = path.join(__dirname, 'database', 'revenue-resilience-dashboard.db');
+const db = new sqlite3.Database(dbPath);
+
+const run = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) return reject(err);
+      resolve(this);
+    });
+  });
+
+const get = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) return reject(err);
+      resolve(row);
+    });
+  });
+
+const all = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+
+const close = () =>
+  new Promise((resolve, reject) => {
+    db.close((err) => {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+
+module.exports = { db, run, get, all, close };

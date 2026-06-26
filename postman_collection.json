@@ -1,0 +1,78 @@
+{
+  "info": {
+    "name": "Revenue Resilience Dashboard API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/"
+      }
+    },
+    {
+      "name": "Create Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Idempotency-Key", "value": "payment-001" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"user_id\": 1,\n  \"amount\": 125.5\n}"
+        },
+        "url": "{{baseUrl}}/api/payments"
+      }
+    },
+    {
+      "name": "List Payments",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/payments"
+      }
+    },
+    {
+      "name": "Retry Payment",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/payments/retry/1"
+      }
+    },
+    {
+      "name": "ARPU Analytics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/analytics/arpu"
+      }
+    },
+    {
+      "name": "Cohort Analytics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/analytics/cohort"
+      }
+    },
+    {
+      "name": "Failure Analytics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/analytics/failures"
+      }
+    },
+    {
+      "name": "Reconciliation Analytics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/analytics/reconciliation"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
