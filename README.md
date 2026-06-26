@@ -1,70 +1,237 @@
 # Revenue Resilience Dashboard
 
-A complete Node.js + Express + SQLite API for simulating payment gateway failures, handling idempotent payments, retrying failed payments, and exposing analytics for ARPU, cohorts, failures, and reconciliation.
+A backend REST API built with **Node.js**, **Express.js**, and **SQLite** to simulate payment processing, deterministic failure handling, and revenue analytics. The project demonstrates reliable payment workflows with idempotency, retry mechanisms, reconciliation reporting, and live analytics such as ARPU and cohort revenue.
 
-## Features
+## 🚀 Live Demo
 
-- Payment processing with simulated 70% success / 30% failure behavior
-- Idempotency middleware using an `Idempotency-Key` header
-- Retry endpoint for failed payments
-- SQLite-backed persistence with seeded users, payments, and cohorts
-- MVC structure with controllers, models, routes, middleware, and utilities
-- CORS enabled and Morgan logging included
-- Render-ready Node.js service configuration
+**Live API:** https://revenue-resilience-dashboard.onrender.com
 
-## Project Structure
+---
 
-- controllers/
-- routes/
-- middleware/
-- models/
-- utils/
-- database/
-- server.js
-- database.js
-- createDatabase.js
-- package.json
+## 📌 Features
 
-## Installation
+* Payment processing with simulated success and failure scenarios
+* Deterministic payment failure handling
+* Idempotency support to prevent duplicate payments
+* Retry mechanism for failed payments
+* SQLite database with automatic initialization and seed data
+* ARPU (Average Revenue Per User) analytics
+* Cohort revenue reporting
+* Payment failure analytics
+* Revenue reconciliation report
+* RESTful API architecture
+* Centralized error handling
+* Request logging
+* Render-ready deployment
+
+---
+
+## 🛠️ Tech Stack
+
+* Node.js
+* Express.js
+* SQLite3
+* UUID
+* CORS
+* Morgan
+
+---
+
+## 📂 Project Structure
+
+```text
+revenue-resilience-dashboard
+│
+├── controllers
+│   ├── analyticsController.js
+│   └── paymentController.js
+│
+├── database
+│   └── revenue-resilience-dashboard.db
+│
+├── middleware
+│   ├── errorHandler.js
+│   └── idempotency.js
+│
+├── models
+│   ├── analyticsModel.js
+│   ├── paymentModel.js
+│   └── userModel.js
+│
+├── routes
+│   ├── analyticsRoutes.js
+│   └── paymentRoutes.js
+│
+├── utils
+│   └── logger.js
+│
+├── createDatabase.js
+├── database.js
+├── server.js
+├── package.json
+└── README.md
+```
+
+---
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/gokulakb/revenue-resilience-dashboard.git
+```
+
+Move into the project directory:
+
+```bash
+cd revenue-resilience-dashboard
+```
+
+Install dependencies:
 
 ```bash
 npm install
-node createDatabase.js
+```
+
+Start the server:
+
+```bash
 npm start
 ```
 
-## API Endpoints
+The application will run on:
+
+```text
+http://localhost:10000
+```
+
+---
+
+## 📡 API Endpoints
+
+### Home
+
+| Method | Endpoint |
+| ------ | -------- |
+| GET    | `/`      |
+
+---
 
 ### Payments
 
-- POST /api/payments
-- GET /api/payments
-- POST /api/payments/retry/:id
+| Method | Endpoint                  | Description              |
+| ------ | ------------------------- | ------------------------ |
+| POST   | `/api/payments`           | Create a new payment     |
+| GET    | `/api/payments`           | Retrieve all payments    |
+| GET    | `/api/payments/:id`       | Retrieve a payment by ID |
+| POST   | `/api/payments/retry/:id` | Retry a failed payment   |
+
+---
 
 ### Analytics
 
-- GET /api/analytics/arpu
-- GET /api/analytics/cohort
-- GET /api/analytics/failures
-- GET /api/analytics/reconciliation
+| Method | Endpoint                        | Description                        |
+| ------ | ------------------------------- | ---------------------------------- |
+| GET    | `/api/analytics/arpu`           | Calculate Average Revenue Per User |
+| GET    | `/api/analytics/cohort`         | Display cohort revenue             |
+| GET    | `/api/analytics/failures`       | Payment failure analytics          |
+| GET    | `/api/analytics/reconciliation` | Revenue reconciliation report      |
 
-## Sample Request
+---
 
-```bash
-curl -X POST http://localhost:3000/api/payments \
-  -H "Content-Type: application/json" \
-  -H "Idempotency-Key: payment-001" \
-  -d '{"user_id": 1, "amount": 125.5}'
+## 📥 Sample Request
+
+### Create Payment
+
+```http
+POST /api/payments
 ```
 
-## Render Deployment
+```json
+{
+  "userId": 1,
+  "amount": 500,
+  "currency": "USD",
+  "idempotencyKey": "payment-001"
+}
+```
 
-1. Create a new Web Service on Render.
-2. Connect this repository.
-3. Set the build command to `npm install`.
-4. Set the start command to `npm start`.
-5. Deploy.
+---
 
-## Notes
+## 📤 Sample Response
 
-The SQLite database file is created under the database directory on first run.
+```json
+{
+  "success": true,
+  "message": "Payment processed successfully",
+  "data": {
+    "id": 151,
+    "user_id": 1,
+    "amount": 500,
+    "currency": "USD",
+    "status": "succeeded",
+    "gateway_response": "approved"
+  }
+}
+```
+
+---
+
+## 📊 Analytics Included
+
+* Average Revenue Per User (ARPU)
+* Cohort Revenue
+* Payment Success Rate
+* Payment Failure Rate
+* Revenue Reconciliation
+* Retry Tracking
+
+---
+
+## 🧪 Testing
+
+The APIs were tested using **Postman** for:
+
+* Payment creation
+* Duplicate payment prevention (idempotency)
+* Retrying failed payments
+* Payment listing
+* ARPU calculation
+* Cohort revenue reporting
+* Failure analytics
+* Revenue reconciliation
+
+---
+
+## 🚀 Deployment
+
+The application is deployed on **Render**.
+
+Build Command:
+
+```bash
+npm install
+```
+
+Start Command:
+
+```bash
+npm start
+```
+
+---
+
+## 📖 Future Improvements
+
+* JWT Authentication
+* PostgreSQL integration
+* Real payment gateway integration (Stripe/Razorpay)
+* Swagger/OpenAPI documentation
+* Docker support
+* CI/CD pipeline
+* Role-based access control
+* Dashboard frontend
+
+---
+
